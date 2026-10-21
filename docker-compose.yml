@@ -1,0 +1,19 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - orderdesk_mongo:/data/db
+  api:
+    build: ./apps/api
+    environment:
+      PORT: 4000
+      MONGODB_URI: mongodb://mongo:27017/orderdesk
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+volumes:
+  orderdesk_mongo:
